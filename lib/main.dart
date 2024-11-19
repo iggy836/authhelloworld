@@ -2,6 +2,10 @@ import 'package:flutter/material.dart'; // FlutterのUIライブラリをイン�
 import 'package:firebase_core/firebase_core.dart'; // Firebaseの初期化を行うためのパッケージをインポート
 import 'package:firebase_auth/firebase_auth.dart'; // Firebaseの認証機能を使用するためのパッケージをインポート
 import 'firebase_options.dart'; // Firebaseのオプション設定をインポート
+import 'newsignup.dart'; //新規登録画面
+import 'home_screen.dart'; // ホーム画面
+
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Flutterのバインディングを初期化（Firebase初期化前に必要）
@@ -121,7 +125,16 @@ class _LoginScreenState extends State<LoginScreen> {
               },
               child: const Text("ログイン"), // ボタンのテキスト
             ),
-            const SizedBox(height: 20), // 20ピクセルのスペースを追加
+            const SizedBox(height: 20), // 新規登録ボタンとの間に20ピクセルのスペースを追加
+              ElevatedButton(
+                onPressed: () { // 新規登録ボタンが押されたときの処理
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SignupScreen()), // 新規登録画面に遷移
+                  );
+                },
+                child: const Text("新規登録"), // 新規登録ボタンに表示されるテキスト
+              ),
             // エラーメッセージの表示
             Text(message),
           ],
@@ -131,36 +144,4 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-// ホーム画面のウィジェット
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('ホーム画面'), // ホーム画面のタイトル
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center, // 中央に配置
-          children: [
-            const Text('HelloWorld!'), // HelloWorld!を中央に表示
-            const SizedBox(height: 20), // 20ピクセルのスペースを追加
-            ElevatedButton(
-              onPressed: () async {
-                await FirebaseAuth.instance.signOut(); // サインアウト処理
-                print("サインアウト完了"); // デバッグ用のログ
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const MyApp()), // ログイン画面に戻る
-                );
-              },
-              child: const Text("ログアウト"), // ログアウトボタンのテキスト
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
